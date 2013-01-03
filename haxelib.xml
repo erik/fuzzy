@@ -1,0 +1,7 @@
+<project name="fuzzy" url="http://github.com/boredomist/fuzzy" license="MIT">
+  <user name="boredomist"/>
+  <tag v="flash"/>
+  <tag v="example"/>
+  <description>It's a pattern matching type deal.</description>
+  <version name="0.0">Rapid prototyping edition</version>
+</project>

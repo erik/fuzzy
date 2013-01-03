@@ -1,0 +1,68 @@
+   group Enemy
+   {
+      -- common to each enemy
+      responses {
+         response CallForHelp
+         {
+            say "I need help!" the dispatch Enemy.any.HelpRequested
+            say "Help me!" the dispatch Enemy.any.HelpRequested
+            say "I'm dying here!" the dispatch Enemy.any.HelpRequested
+         }
+      }
+
+      group Cat
+      {
+         rules {
+         }
+      }
+
+      group Dog
+      {
+         rules {
+            rule HelpRequested
+            {
+               when IsNotSelf, health >= 50
+
+               subrule
+               {
+                  {
+                     when requester=="dog"
+                     respond HelpDog
+                  }
+
+                  {
+                     when requester=="cat"
+                     respond HelpCat
+                  }
+
+                  respond Help
+               }
+            }
+
+            rule CallForHelp : probability 30%, limit once, limit 60s
+            {
+               when health in 10..20
+
+               set helpRequested = true, requester = "dog"
+
+               -- All equivalent due to name resolution
+               -- respond Enemy.Dog.CallForHelp
+               -- respond Dog.CallForHelp
+               respond CallForHelp
+            }
+         }
+
+         responses {
+            response HelpDog
+            {
+               say "Sure buddy, I'm coming for you!" and dispatch Enemy.Dog.CallForHelpRespond
+            }
+
+            response HelpCat
+            {
+               say "Eh, I think you can handle this one" and disp
+            }
+         }
+
+      }
+   }

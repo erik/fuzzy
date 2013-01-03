@@ -1,0 +1,10 @@
+-cp test
+-x FuzzyTest
+-debug
+
+#--next
+
+# -cp test
+# -main FuzzyTest
+# -swf FuzzyTest.swf
+# -debug
