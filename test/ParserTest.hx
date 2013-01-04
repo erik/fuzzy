@@ -76,4 +76,29 @@ class ParserTest extends TestCase
     assertEquals("myrule", rule.response.name);
   }
 
+  public function testParseRules()
+  {
+    var lex = new Lexer("rules {\n" +
+                        "  rule some_rule : limit once {\n" +
+                        "    when FooBar;\n" +
+                        "    respond Baz;\n" +
+                        "  }\n" +
+                        "  rule other_rule {\n" +
+                        "    when Baz;\n" +
+                        "    respond FooBar;\n" +
+                        "  }\n" +
+                        "}");
+    var parse = new Parser(lex);
+
+    // rules
+    parse.parseValue();
+
+    var rules = parse.parseRules();
+
+    assertEquals(2, rules.rules.length);
+
+    assertEquals("some_rule", rules.rules[0].name);
+    assertEquals("other_rule", rules.rules[1].name);
+  }
+
 }

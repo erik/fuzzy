@@ -6,8 +6,10 @@ import fuzzy.ast.IdNode;
 import fuzzy.ast.NumericNode;
 import fuzzy.ast.RangeNode;
 import fuzzy.ast.RuleNode;
+import fuzzy.ast.RulesNode;
 import fuzzy.ast.StringNode;
 import fuzzy.ast.ValueNode;
+
 
 import fuzzy.ASTNode;
 import fuzzy.Token;
@@ -137,6 +139,25 @@ class Parser
     return rule;
   }
 
+  public function parseRules() : RulesNode
+  {
+    var rules = new RulesNode();
+
+    expect(new Token(TOpenBrace));
+
+    while(true) {
+      rules.add(parseRule());
+
+      if(this.current_token.type != TRule) {
+        break;
+      }
+    }
+
+    expect(new Token(TCloseBrace));
+
+    return rules;
+  }
+
   public function parse() : Array<ASTNode>
   {
 
@@ -157,6 +178,7 @@ class Parser
     var tok = current_token;
     if(accept(t))
       return tok;
+
     throw new ParseError('unexpected ' + current_token.toString() +
                          ': expected ' + t.toString());
   }
