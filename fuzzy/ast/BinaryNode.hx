@@ -13,11 +13,6 @@ class BinaryNode extends ASTNode
     this.right = right;
   }
 
-  public override function evaluate() : ASTNode
-  {
-    return this;
-  }
-
   public override function toString() : String
   {
     return left.toString() + " " + Std.string(op) + " " + right.toString();

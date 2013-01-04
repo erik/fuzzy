@@ -16,11 +16,6 @@ class RuleNode extends ASTNode
     response = null;
   }
 
-  public override function evaluate() : ASTNode
-  {
-    return this;
-  }
-
   public override function toString() : String
   {
     return "<RULENODE>";

@@ -10,11 +10,6 @@ class AssignmentNode extends ASTNode
     this.value = value;
   }
 
-  public override function evaluate() : ASTNode
-  {
-    return this;
-  }
-
   public override function toString() : String
   {
     return name + " = " + value.toString();

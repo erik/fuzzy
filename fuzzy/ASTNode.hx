@@ -6,11 +6,6 @@ class ASTNode
   {
   }
 
-  public function evaluate() : ASTNode
-  {
-    return this;
-  }
-
   public function toString() : String
   {
     return "<ASTNODE>";

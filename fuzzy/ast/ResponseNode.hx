@@ -9,11 +9,6 @@ class ResponseNode extends ASTNode
     this.name = name;
   }
 
-  public override function evaluate() : ASTNode
-  {
-    return this;
-  }
-
   public override function toString() : String
   {
     return "<RESPONSENODE>";
