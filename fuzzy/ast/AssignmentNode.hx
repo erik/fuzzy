@@ -2,7 +2,7 @@ package fuzzy.ast;
 
 class AssignmentNode extends ASTNode
 {
-  public function new(name : String, value : ASTNode)
+  public function new(name : String, value : ValueNode)
   {
     super();
 
@@ -21,5 +21,5 @@ class AssignmentNode extends ASTNode
   }
 
   public var name : String;
-  public var value : ASTNode;
+  public var value : ValueNode;
 }

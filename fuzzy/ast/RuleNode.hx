@@ -28,6 +28,6 @@ class RuleNode extends ASTNode
 
   public var facts : Array<ASTNode>;
   public var assignments : Array<AssignmentNode>;
-  public var response : ASTNode;
+  public var response : IdNode;
   public var name : String;
 }

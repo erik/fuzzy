@@ -1,6 +1,7 @@
 import haxe.unit.TestCase;
 
 import fuzzy.ast.RangeNode;
+import fuzzy.ast.BinaryNode;
 import fuzzy.ast.NumericNode;
 import fuzzy.ast.StringNode;
 import fuzzy.ast.IdNode;
@@ -36,7 +37,24 @@ class ParserTest extends TestCase
     assertTrue(Std.is(val, RangeNode));
     assertEquals(1, cast(val, RangeNode).low);
     assertEquals(2, cast(val, RangeNode).high);
+  }
 
+  public function testParseAssignment() : Void
+  {
+    var lex = new Lexer("a=1 abc = an_ident abcde= 'string'");
+    var parse = new Parser(lex);
+
+    var val = parse.parseAssignment();
+    assertEquals("a", val.name);
+    assertEquals(1, cast(val.value, NumericNode).num);
+
+    val = parse.parseAssignment();
+    assertEquals("abc", val.name);
+    assertEquals("an_ident", cast(val.value, IdNode).name);
+
+    val = parse.parseAssignment();
+    assertEquals("abcde", val.name);
+    assertEquals("string", cast(val.value, StringNode).string);
   }
 
   public function testParseRule()
@@ -49,8 +67,13 @@ class ParserTest extends TestCase
     var parse = new Parser(lex);
     var rule = parse.parseRule();
     assertEquals("myrule", rule.name);
+
     assertEquals(2, rule.facts.length);
+    assertTrue(Std.is(rule.facts[0], BinaryNode));
+
     assertEquals(2, rule.assignments.length);
+
+    assertEquals("myrule", rule.response.name);
   }
 
 }

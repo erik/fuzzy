@@ -73,10 +73,12 @@ class Parser
   public function parseAssignment() : AssignmentNode
   {
     var name = expect(new Token(TIdentifier));
-    expect(new Token(TAssign));
-    var num = expect(new Token(TNumber));
 
-    return new AssignmentNode(name.value, null);
+    expect(new Token(TAssign));
+
+    var value = parseValue();
+
+    return new AssignmentNode(name.value, value);
   }
 
   public function parseRule() : RuleNode
@@ -109,8 +111,7 @@ class Parser
           }
         } else {
           // just the token
-          // TODO: ID node
-          rule.facts.push(new ASTNode());
+          rule.facts.push(new IdNode(tok.value));
         }
       } while(accept(new Token(TComma)));
 
@@ -126,7 +127,8 @@ class Parser
     }
 
     if(accept(new Token(TRespond))) {
-      expect(new Token(TIdentifier));
+      rule.response = new IdNode(expect(new Token(TIdentifier)).value);
+
       expect(new Token(TSemi));
     }
 
