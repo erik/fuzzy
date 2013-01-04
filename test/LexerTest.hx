@@ -19,6 +19,23 @@ class LexerTest extends TestCase
     assertEquals(lex.nextToken().type, TEOF);
   }
 
+  public function testLexLocation() : Void
+  {
+    var lex = new Lexer("0 234 6789");
+
+    var tok = lex.nextToken();
+    assertEquals(0, tok.location.min);
+    assertEquals(0, tok.location.max);
+
+    tok = lex.nextToken();
+    assertEquals(2, tok.location.min);
+    assertEquals(4, tok.location.max);
+
+    tok = lex.nextToken();
+    assertEquals(6, tok.location.min);
+    assertEquals(9, tok.location.max);
+  }
+
   public function testLexNumber() : Void
   {
     var lex = new Lexer("0 100 3000a");

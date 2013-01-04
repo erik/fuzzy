@@ -19,15 +19,23 @@ enum TokenType
   TRule; TWhen; TSet; TRespond;
 }
 
+typedef Location =
+{
+  var min : Int;
+  var max : Int;
+}
+
 class Token
 {
   public var type : TokenType;
   public var value : String;
+  public var location : Location;
 
-  public function new(t : TokenType, ?v : String)
+  public function new(t : TokenType, ?v : String, ?loc : Location)
   {
     type = t;
     value = v;
+    location = loc;
   }
 
   public function equal(other : Token) : Bool

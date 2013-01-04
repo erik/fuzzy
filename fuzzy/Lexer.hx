@@ -4,12 +4,19 @@ using StringTools;
 
 class SyntaxError
 {
-  public function new(msg : String)
+  public function new(lex : Lexer, msg : String)
   {
     this.msg = msg;
+    line = lex.eol_pos.length + 1;
+  }
+
+  public function toString() : String
+  {
+    return "Syntax error: " + msg + "\n\t at line " + Std.string(line);
   }
 
   public var msg : String;
+  public var line : Int;
 }
 
 class Lexer
@@ -18,6 +25,7 @@ class Lexer
   {
     this.source = source;
     this.idx = -1;
+    this.eol_pos = new Array<Int>();
   }
 
   private function current() : String
@@ -62,7 +70,7 @@ class Lexer
 
     // invalid number
     if(isAlpha(this.peek())) {
-      throw new SyntaxError('Invalid number: ' + num + this.next());
+      throw new SyntaxError(this, 'Invalid number: ' + num + this.next());
     }
 
     return new Token(TNumber, num);
@@ -97,7 +105,38 @@ class Lexer
     return new Token(TString, str);
   }
 
+  private function skipWhitespace() : Void
+  {
+    while(true) {
+      switch(this.peek()) {
+
+      case " ", "\t":
+        null;
+
+      case "\n":
+        eol_pos.push(idx);
+
+      default:
+        return;
+      }
+      this.next();
+    }
+  }
+
   public function nextToken() : Token
+  {
+    skipWhitespace();
+
+    var min = idx + 1;
+    var tok = this.lex();
+    var max = idx;
+
+    tok.location = {min:min, max:max};
+
+    return tok;
+  }
+
+  public function lex() : Token
   {
     while(true) {
       switch(this.next()) {
@@ -139,9 +178,10 @@ class Lexer
         }
       }
     }
-    throw new SyntaxError("Unexpected character: " + this.current());
+    throw new SyntaxError(this, "Unexpected character: " + this.current());
   }
 
-  var source : String;
-  var idx : Int;
+  public var eol_pos : Array<Int>;
+  public var idx : Int;
+  public var source : String;
 }
