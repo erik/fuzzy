@@ -146,6 +146,12 @@ class Lexer
       case " ", "\t", "\n":
           continue;
 
+      case "#":
+        while(this.current() != "\n" && this.current() != "") {
+          this.next();
+        }
+        continue;
+
       case ";": return new Token(TSemi);
 
       case "{": return new Token(TOpenBrace);

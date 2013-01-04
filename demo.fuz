@@ -1,6 +1,6 @@
    group Enemy
    {
-      -- common to each enemy
+      # common to each enemy
       responses {
          response CallForHelp
          {
@@ -45,9 +45,9 @@
 
                set helpRequested = true, requester = "dog"
 
-               -- All equivalent due to name resolution
-               -- respond Enemy.Dog.CallForHelp
-               -- respond Dog.CallForHelp
+               # All equivalent due to name resolution
+               # respond Enemy.Dog.CallForHelp
+               # respond Dog.CallForHelp
                respond CallForHelp
             }
          }

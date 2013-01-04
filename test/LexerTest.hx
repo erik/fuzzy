@@ -53,6 +53,14 @@ class LexerTest extends TestCase
 
   }
 
+  public function testLexComment() : Void
+  {
+    var lex = new Lexer("#\n1\n# on own line\n2 # on same line\n#");
+    assertTrue(lex.nextToken().equal(new Token(TNumber, "1")));
+    assertTrue(lex.nextToken().equal(new Token(TNumber, "2")));
+    assertTrue(lex.nextToken().equal(new Token(TEOF)));
+  }
+
   public function testLexIdentifier() : Void
   {
     var lex = new Lexer("a __abc _123 a1b b2_b");
