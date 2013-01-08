@@ -9,8 +9,6 @@ import fuzzy.ast.IdNode;
 import fuzzy.Parser;
 import fuzzy.Lexer;
 
-@:access(fuzzy)
-@:access(fuzzy.Parser)
 class ParserTest extends TestCase
 {
   function testParseValue() : Void
@@ -127,5 +125,4 @@ class ParserTest extends TestCase
     assertEquals("some_rule", rules[0].name);
     assertEquals("other_rule",rules[1].name);
   }
-
 }

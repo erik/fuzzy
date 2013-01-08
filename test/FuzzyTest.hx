@@ -17,6 +17,7 @@ class FuzzyTest extends TestCase
     r.add(new FuzzyTest());
     r.add(new LexerTest());
     r.add(new ParserTest());
+    r.add(new EngineTest());
 
     r.run();
   }
