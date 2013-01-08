@@ -13,6 +13,7 @@ import fuzzy.ast.ValueNode;
 import fuzzy.ASTNode;
 import fuzzy.Token;
 
+// TODO: include toString function, location information, etc.
 class ParseError
 {
   public function new(msg : String)
@@ -22,6 +23,10 @@ class ParseError
 
   public var msg : String;
 }
+
+typedef Script = { rules     : Array<RuleNode>,
+                   responses : Array<ResponseNode>
+};
 
 class Parser
 {
@@ -54,6 +59,7 @@ class Parser
                          tok.toString());
   }
 
+  // TODO: This needs to be written
   public function parseCondition(t : Token) : BinaryNode
   {
     var node : BinaryNode = new BinaryNode(null, null, null);
@@ -204,12 +210,12 @@ class Parser
     return rules;
   }
 
-  public function parse() : Array<ASTNode>
+  public function parse() : Script
   {
     var rules = parseRules();
     var responses = parseResponses();
 
-    return nodes;
+    return { rules : rules, responses : responses };
   }
 
   private function accept(t : Token) : Bool
