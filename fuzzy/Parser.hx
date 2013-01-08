@@ -5,11 +5,10 @@ import fuzzy.ast.BinaryNode;
 import fuzzy.ast.IdNode;
 import fuzzy.ast.NumericNode;
 import fuzzy.ast.RangeNode;
+import fuzzy.ast.ResponseNode;
 import fuzzy.ast.RuleNode;
-import fuzzy.ast.RulesNode;
 import fuzzy.ast.StringNode;
 import fuzzy.ast.ValueNode;
-
 
 import fuzzy.ASTNode;
 import fuzzy.Token;
@@ -83,6 +82,52 @@ class Parser
     return new AssignmentNode(name.value, value);
   }
 
+  public function parseResponse() : ResponseNode
+  {
+    expect(new Token(TResponse));
+    var name = expect(new Token(TIdentifier));
+    var resp = new ResponseNode(name.value);
+
+    expect(new Token(TOpenBrace));
+
+    while(true) {
+      var tok = current_token;
+      if(!accept(new Token(TIdentifier)))
+        break;
+
+      var values = new Array<ValueNode>();
+      while(!accept(new Token(TSemi))) {
+        values.push(parseValue());
+      }
+
+      resp.options.push({func : tok.value, args : values});
+    }
+
+    expect(new Token(TCloseBrace));
+
+    return resp;
+  }
+
+  public function parseResponses() : Array<ResponseNode>
+  {
+    var responses = new Array<ResponseNode>();
+
+    expect(new Token(TResponses));
+    expect(new Token(TOpenBrace));
+
+    while(true) {
+      responses.push(parseResponse());
+
+      if(this.current_token.type != TResponse) {
+        break;
+      }
+    }
+
+    expect(new Token(TCloseBrace));
+
+    return responses;
+  }
+
   public function parseRule() : RuleNode
   {
     expect(new Token(TRule));
@@ -139,14 +184,15 @@ class Parser
     return rule;
   }
 
-  public function parseRules() : RulesNode
+  public function parseRules() : Array<RuleNode>
   {
-    var rules = new RulesNode();
+    var rules = new Array<RuleNode>();
 
+    expect(new Token(TRules));
     expect(new Token(TOpenBrace));
 
     while(true) {
-      rules.add(parseRule());
+      rules.push(parseRule());
 
       if(this.current_token.type != TRule) {
         break;
@@ -160,6 +206,8 @@ class Parser
 
   public function parse() : Array<ASTNode>
   {
+    var rules = parseRules();
+    var responses = parseResponses();
 
     return nodes;
   }

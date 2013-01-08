@@ -9,14 +9,11 @@ import fuzzy.ast.IdNode;
 import fuzzy.Parser;
 import fuzzy.Lexer;
 
+@:access(fuzzy)
+@:access(fuzzy.Parser)
 class ParserTest extends TestCase
 {
-  public function new()
-  {
-    super();
-  }
-
-  public function testParseValue() : Void
+  function testParseValue() : Void
   {
     var lex = new Lexer("123 'string' fact 1..2");
     var parse = new Parser(lex);
@@ -39,7 +36,7 @@ class ParserTest extends TestCase
     assertEquals(2, cast(val, RangeNode).high);
   }
 
-  public function testParseAssignment() : Void
+  function testParseAssignment() : Void
   {
     var lex = new Lexer("a=1 abc = an_ident abcde= 'string'");
     var parse = new Parser(lex);
@@ -57,7 +54,41 @@ class ParserTest extends TestCase
     assertEquals("string", cast(val.value, StringNode).string);
   }
 
-  public function testParseRule()
+  function testParseResponse()
+  {
+    var lex = new Lexer("response some_response {\n" +
+                        "  say 'foo' 'bar' 'baz'\n" +
+                        "    this_too;" +
+                        "  do 1 'two' _3;\n" +
+                        "  asdf;\n" +
+                        "}");
+    var parse = new Parser(lex);
+
+    var response = parse.parseResponse();
+
+    assertEquals("some_response", response.name);
+    assertEquals(3, response.options.length);
+    assertEquals(0, response.options[2].args.length);
+  }
+
+  function testParseResponses()
+  {
+    var lex = new Lexer("responses {\n" +
+                        "  response resp {\n" +
+                        "    do x y z;\n" +
+                        "  }" +
+                        "  response resp2 {\n" +
+                        "    do x y z;\n" +
+                        "  }" +
+                        "}");
+    var parse = new Parser(lex);
+
+    var responses = parse.parseResponses();
+
+    assertEquals(2, responses.length);
+  }
+
+  function testParseRule()
   {
     var lex = new Lexer("rule myrule : limit once {\n" +
                         "  when health >= 0, IsNotSelf;\n" +
@@ -76,7 +107,7 @@ class ParserTest extends TestCase
     assertEquals("myrule", rule.response.name);
   }
 
-  public function testParseRules()
+  function testParseRules()
   {
     var lex = new Lexer("rules {\n" +
                         "  rule some_rule : limit once {\n" +
@@ -89,16 +120,12 @@ class ParserTest extends TestCase
                         "  }\n" +
                         "}");
     var parse = new Parser(lex);
-
-    // rules
-    parse.parseValue();
-
     var rules = parse.parseRules();
 
-    assertEquals(2, rules.rules.length);
+    assertEquals(2, rules.length);
 
-    assertEquals("some_rule", rules.rules[0].name);
-    assertEquals("other_rule", rules.rules[1].name);
+    assertEquals("some_rule", rules[0].name);
+    assertEquals("other_rule",rules[1].name);
   }
 
 }

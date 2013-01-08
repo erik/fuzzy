@@ -85,10 +85,13 @@ class Lexer
     }
 
     switch(id) {
-    case "rule": return new Token(TRule);
-    case "when": return new Token(TWhen);
-    case "set": return new Token(TSet);
     case "respond": return new Token(TRespond);
+    case "response": return new Token(TResponse);
+    case "responses": return new Token(TResponses);
+    case "rule": return new Token(TRule);
+    case "rules": return new Token(TRules);
+    case "set": return new Token(TSet);
+    case "when": return new Token(TWhen);
     }
 
     return new Token(TIdentifier, id);

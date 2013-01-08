@@ -4,19 +4,13 @@ enum TokenType
 {
   TNone;
   TEOF;
-  TOpenBrace;
-  TCloseBrace;
-  TDot;
-  TDotDot;
-  TColon;
-  TComma;
-  TSemi;
+  TOpenBrace; TCloseBrace;
+  TDot; TDotDot;
+  TColon; TComma; TSemi;
   TAssign;
   TEq; TGTE; TLTE; TGT; TLT;
-  TString;
-  TNumber;
-  TIdentifier;
-  TRule; TWhen; TSet; TRespond;
+  TString; TNumber; TIdentifier;
+  TRule; TRules; TWhen; TSet; TRespond; TResponse; TResponses;
 }
 
 typedef Location =

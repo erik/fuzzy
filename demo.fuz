@@ -4,9 +4,9 @@
       responses {
          response CallForHelp
          {
-            say "I need help!" the dispatch Enemy.any.HelpRequested
-            say "Help me!" the dispatch Enemy.any.HelpRequested
-            say "I'm dying here!" the dispatch Enemy.any.HelpRequested
+            say "I need help!" then dispatch Enemy.any.HelpRequested
+            say "Help me!" then dispatch Enemy.any.HelpRequested
+            say "I'm dying here!" then dispatch Enemy.any.HelpRequested
          }
       }
 
